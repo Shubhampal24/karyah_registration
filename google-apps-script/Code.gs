@@ -35,6 +35,7 @@ function doGet(e) {
 
     // 1. Tally registrations from the main sheet
     var regSheet = ss.getSheetByName(SHEET_REGISTRATIONS);
+    var otherAggregatedCount = 0;
     if (regSheet && regSheet.getLastRow() > 1) {
       var numRows = regSheet.getLastRow() - 1;
       var data = regSheet.getRange(2, 2, numRows, 1).getValues();
@@ -43,8 +44,17 @@ function doGet(e) {
         if (prof) {
           counts[prof] = (counts[prof] || 0) + 1;
           totalRegistrations++;
+          if (prof.toLowerCase().indexOf('other') === 0) {
+            otherAggregatedCount++;
+          }
         }
       }
+    }
+
+    // Always expose the aggregated count for Other Professional
+    if (otherAggregatedCount > 0) {
+      counts['Other Professional'] = otherAggregatedCount;
+      counts['prof_other'] = otherAggregatedCount;
     }
 
     // 2. Check for manual adjustments in live counts tab
@@ -58,6 +68,10 @@ function doGet(e) {
         if (pName && !isNaN(val)) {
           // Manual count override takes precedence if defined
           counts[pName] = Math.max(0, val);
+          if (pName.toLowerCase().indexOf('other') === 0) {
+            counts['Other Professional'] = Math.max(0, val);
+            counts['prof_other'] = Math.max(0, val);
+          }
         }
       }
     }

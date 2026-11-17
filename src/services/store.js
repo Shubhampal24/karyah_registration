@@ -96,9 +96,10 @@ export async function fetchGlobalCounts(professionsList = []) {
     const data = await res.json();
 
     if (data && data.status === 'ok' && data.counts) {
-      const incoming = data.counts; // e.g. { "Civil Contractor": 5, "Building Architect": 3 }
-      const counts = getCountsMap();
+      const incoming = data.counts; // e.g. { "Civil Contractor": 5, "Other: doctor": 1 }
+      const counts = getProfessionCounts();
 
+      // 1. Standard professions matching
       for (const [profKey, val] of Object.entries(incoming)) {
         const num = parseInt(val, 10);
         if (isNaN(num)) continue;
@@ -112,8 +113,26 @@ export async function fetchGlobalCounts(professionsList = []) {
             p.name.toLowerCase() === profKey.toLowerCase() ||
             p.slug.toLowerCase() === profKey.toLowerCase()
         );
-        if (match) {
+        if (match && match.id !== 'prof_other') {
           counts[match.id] = num;
+        }
+      }
+
+      // 2. Aggregate all "Other" entries into prof_other
+      if (incoming['prof_other'] !== undefined) {
+        counts['prof_other'] = parseInt(incoming['prof_other'], 10) || 0;
+      } else if (incoming['Other Professional'] !== undefined) {
+        counts['prof_other'] = parseInt(incoming['Other Professional'], 10) || 0;
+      } else {
+        let otherTotal = 0;
+        for (const [profKey, val] of Object.entries(incoming)) {
+          if (profKey.toLowerCase().startsWith('other')) {
+            const num = parseInt(val, 10);
+            if (!isNaN(num)) otherTotal += num;
+          }
+        }
+        if (otherTotal > 0) {
+          counts['prof_other'] = otherTotal;
         }
       }
 
@@ -154,9 +173,8 @@ export function saveRegistration({ professionId, professionName, mobileNumber, c
   records.push(registration);
   saveAll(records);
 
-  // Immediately increment and persist count
+  // Recalculate exact tally from records and persist (no double-counting)
   const currentCounts = getProfessionCounts();
-  currentCounts[professionId] = (currentCounts[professionId] || 0) + 1;
   saveCountsMap(currentCounts);
 
   // Background dispatch to Google Sheet script if connected
@@ -209,8 +227,12 @@ export function getProfessionCounts() {
 
   // Exact live tally matching actual registrations
   for (const r of records) {
-    if (r.professionId) {
-      counts[r.professionId] = (counts[r.professionId] || 0) + 1;
+    let id = r.professionId;
+    if (!id && r.professionName && r.professionName.toLowerCase().startsWith('other')) {
+      id = 'prof_other';
+    }
+    if (id) {
+      counts[id] = (counts[id] || 0) + 1;
     }
   }
 
