@@ -20,7 +20,7 @@ export function AnimalMascot({ species, isHovered, scale = 1 }) {
     // Slight head tilt
     rootRef.current.rotation.z = Math.sin(t * 1.5) * 0.03;
   });
-
+  
   return (
     <group ref={rootRef} scale={scale} position={[0, -0.1, 0]}>
       {/* Universal Pedestal / Clay Base */}
