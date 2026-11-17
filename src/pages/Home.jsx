@@ -61,24 +61,43 @@ export default function Home() {
     };
   }, [professions]);
 
-  // Real-time filtering across multi-sectors and keywords
+  // Enhanced real-time search with multi-word support & sector awareness
   const filteredProfessions = useMemo(() => {
+    const q = searchTerm.toLowerCase().trim();
+
     return professions.filter((prof) => {
       const matchesSector = selectedSector === 'All' || prof.sector === selectedSector;
       if (!matchesSector) return false;
 
-      if (!searchTerm.trim()) return true;
+      if (!q) return true;
 
-      const q = searchTerm.toLowerCase().trim();
-      return (
-        prof.name.toLowerCase().includes(q) ||
-        (prof.sector && prof.sector.toLowerCase().includes(q)) ||
-        (prof.badge && prof.badge.toLowerCase().includes(q)) ||
-        (prof.gear && prof.gear.toLowerCase().includes(q)) ||
-        (prof.animal && prof.animal.toLowerCase().includes(q))
-      );
+      // Multi-word flexible search: e.g. "civil eng", "site super", "soft dev"
+      const words = q.split(/\s+/).filter(Boolean);
+
+      const targetText = [
+        prof.name,
+        prof.sector,
+        prof.badge,
+        prof.gear,
+        prof.animal,
+        prof.species,
+        prof.slug,
+      ]
+        .filter(Boolean)
+        .join(' ')
+        .toLowerCase();
+
+      return words.every((word) => targetText.includes(word));
     });
   }, [professions, selectedSector, searchTerm]);
+
+  const handleSearchChange = (val) => {
+    setSearchTerm(val);
+    // When typing a search query, reset sector filter to 'All' so search searches all professions globally
+    if (val.trim() && selectedSector !== 'All') {
+      setSelectedSector('All');
+    }
+  };
 
   const handleSelectProfession = (profession) => {
     reset();
@@ -122,7 +141,7 @@ export default function Home() {
     <div className="min-h-screen bg-[#FFF9F2] flex flex-col justify-between">
       <Header
         searchTerm={searchTerm}
-        onSearchChange={setSearchTerm}
+        onSearchChange={handleSearchChange}
         matchCount={filteredProfessions.length}
         totalCount={professions.length}
       />

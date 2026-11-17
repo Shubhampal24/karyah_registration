@@ -100,12 +100,10 @@ export default function AdminDashboard({ isOpen, onClose, onLogout }) {
       {/* ── Top Bar ─────────────────────────────────────────────────────── */}
       <div className="flex items-center justify-between px-5 sm:px-8 py-4 bg-white border-b border-[#EFE8DE] shadow-sm flex-shrink-0">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-2xl bg-[#FFF1E5] flex items-center justify-center">
-            <ShieldCheck className="w-5 h-5 text-[#FF8A1F]" />
-          </div>
-          <div>
-            <h2 className="text-base font-extrabold text-[#202020]">Karyah Admin Portal</h2>
-            <p className="text-xs text-[#77716B]">Live Registrations & Excel / Google Sheet Export</p>
+          <img src="/images/logo.webp" alt="Karyah" className="h-8 w-auto object-contain" />
+          <div className="border-l border-[#EFE8DE] pl-3">
+            <h2 className="text-sm sm:text-base font-extrabold text-[#202020]">Admin Portal</h2>
+            <p className="text-[11px] text-[#77716B]">Live Registrations & Cloud Sync</p>
           </div>
         </div>
 

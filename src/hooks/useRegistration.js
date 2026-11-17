@@ -12,8 +12,8 @@ export function useRegistration() {
 
     const clean = String(mobileNumber).replace(/\D/g, '').slice(-10);
 
-    if (clean.length !== 10 || !/^[6-9]\d{9}$/.test(clean)) {
-      setError('Please enter a valid 10-digit Indian mobile number (starting with 6, 7, 8 or 9).');
+    if (clean.length !== 10) {
+      setError('Please enter a 10-digit mobile number.');
       setSubmitting(false);
       return { success: false };
     }

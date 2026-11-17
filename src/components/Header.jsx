@@ -20,17 +20,14 @@ export default function Header({
     <header className="sticky top-0 z-40 w-full glass-header border-b border-[#EAE2D5] bg-[#FFF9F2]/95 backdrop-blur-md">
       <div className="max-w-[1680px] mx-auto px-3 sm:px-6 lg:px-10 py-3 sm:py-0 sm:h-20 flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-6">
         
-        {/* Brand Logo & Tagline */}
+        {/* Official Brand Logo with Headroom Padding */}
         <div className="flex items-center justify-between w-full sm:w-auto">
-          <a href="#" className="flex flex-col select-none group">
-            <div className="flex items-center gap-1">
-              <span className="text-3xl font-black tracking-tight text-[#FF8A1F] font-sans">
-                karyah<span className="text-[#202020]">:</span>
-              </span>
-            </div>
-            <span className="text-[10px] font-semibold tracking-widest text-[#77716B] -mt-1 font-serif">
-              | कर्मशील भव: |
-            </span>
+          <a href="#" className="flex items-center select-none group py-4 my-auto">
+            <img
+              src="/images/logo.webp"
+              alt="Karyah – सर्वगुण संपन्न"
+              className="h-12 sm:h-14 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
+            />
           </a>
 
           {/* Mobile Badge */}
@@ -67,10 +64,10 @@ export default function Header({
         </div>
 
         {/* Desktop Registry Sector Tag */}
-        <div className="hidden sm:flex items-center gap-2.5 px-4 py-2 rounded-full bg-[#FFF1E5] text-[#FF8A1F] text-xs font-black border border-[#FF8A1F]/30 shadow-sm shrink-0">
-          <Layers className="w-4 h-4" />
+        <div className="hidden sm:flex items-center gap-2 px-3.5 py-2 rounded-full bg-[#FFF1E5] text-[#FF8A1F] text-xs font-black border border-[#FF8A1F]/30 shadow-sm shrink-0">
+          <Layers className="w-3.5 h-3.5" />
           <span>
-            {searchTerm ? `${matchCount} Matches Found` : `Multi-Sector Network (${totalCount || 24})`}
+            {searchTerm ? `${matchCount} ${matchCount === 1 ? 'Match' : 'Matches'}` : `${totalCount || 28} Professions`}
           </span>
         </div>
 

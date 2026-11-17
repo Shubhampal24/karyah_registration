@@ -32,18 +32,7 @@ export default function RegistrationModal({
     const digitsOnly = e.target.value.replace(/\D/g, '').slice(0, 10);
     setMobileNumber(digitsOnly);
 
-    // Live validation
-    if (digitsOnly.length > 0) {
-      const firstDigit = digitsOnly[0];
-      if (!['6', '7', '8', '9'].includes(firstDigit)) {
-        setValidationError('Indian mobile numbers must start with 6, 7, 8, or 9.');
-        return;
-      }
-    }
-
     if (digitsOnly.length === 10) {
-      setValidationError('');
-    } else if (validationError) {
       setValidationError('');
     }
   };
@@ -53,12 +42,6 @@ export default function RegistrationModal({
 
     if (!mobileNumber) {
       setValidationError('Please enter your 10-digit mobile number.');
-      return;
-    }
-
-    const firstDigit = mobileNumber[0];
-    if (!['6', '7', '8', '9'].includes(firstDigit)) {
-      setValidationError('Indian mobile numbers must start with 6, 7, 8, or 9.');
       return;
     }
 
@@ -85,7 +68,7 @@ export default function RegistrationModal({
     });
   };
 
-  const isValidNumber = mobileNumber.length === 10 && /^[6-9]\d{9}$/.test(mobileNumber);
+  const isValidNumber = mobileNumber.length === 10;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/45 backdrop-blur-sm animate-in fade-in duration-200">
@@ -96,10 +79,11 @@ export default function RegistrationModal({
       <div className="relative w-full max-w-lg bg-white rounded-3xl shadow-modal border border-[#EFE8DE] overflow-hidden z-10 animate-in zoom-in-95 duration-200">
         {/* Header Bar */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-[#F3ECE0] bg-[#FFFBF7]">
-          <div className="flex items-center gap-2">
-            <span className="w-2.5 h-2.5 rounded-full bg-[#FF8A1F]"></span>
+          <div className="flex items-center gap-2.5">
+            <img src="/images/logo.webp" alt="Karyah" className="h-7 w-auto object-contain" />
+            <span className="text-gray-300">|</span>
             <span className="text-xs font-bold uppercase tracking-wider text-[#FF8A1F]">
-              Karyah Professional Network
+              Professional Registry
             </span>
           </div>
           <button
@@ -169,7 +153,7 @@ export default function RegistrationModal({
                 {isValidNumber && (
                   <span className="text-[11px] font-bold text-emerald-600 flex items-center gap-1">
                     <CheckCircle2 className="w-3.5 h-3.5" />
-                    Valid Indian Number
+                    10-Digit Mobile Number
                   </span>
                 )}
               </div>
@@ -199,7 +183,7 @@ export default function RegistrationModal({
                 <Phone className="w-4 h-4 text-[#77716B] absolute right-3.5 pointer-events-none" />
               </div>
               <p className="text-[11px] text-[#77716B] mt-1.5 font-medium">
-                Indian mobile numbers must be 10 digits starting with 6, 7, 8, or 9.
+                Please enter a complete 10-digit mobile number.
               </p>
             </div>
 

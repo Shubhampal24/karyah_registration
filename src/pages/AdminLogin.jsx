@@ -36,13 +36,11 @@ export default function AdminLogin({ isOpen, onClose, onLoginSuccess }) {
 
         {/* Header */}
         <div className="flex items-center justify-between pb-5 border-b border-[#F3ECE0] mb-6">
-          <div className="flex items-center gap-2.5">
-            <div className="w-10 h-10 rounded-2xl bg-[#FFF1E5] flex items-center justify-center">
-              <ShieldCheck className="w-5 h-5 text-[#FF8A1F]" />
-            </div>
-            <div>
-              <h3 className="text-base font-extrabold text-[#202020]">Admin Access</h3>
-              <p className="text-xs text-[#77716B]">Karyah Registration Dashboard</p>
+          <div className="flex items-center gap-3">
+            <img src="/images/logo.webp" alt="Karyah" className="h-9 w-auto object-contain" />
+            <div className="border-l border-[#EFE8DE] pl-3">
+              <h3 className="text-sm font-extrabold text-[#202020]">Admin Access</h3>
+              <p className="text-[11px] text-[#77716B]">Secure Portal</p>
             </div>
           </div>
           <button

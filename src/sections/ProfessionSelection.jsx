@@ -46,6 +46,25 @@ export default function ProfessionSelection({
           </div>
         )}
 
+        {/* Active Search Feedback Banner */}
+        {searchTerm.trim() && professions.length > 0 && (
+          <div className="mb-5 flex items-center justify-between px-4 py-2.5 rounded-2xl bg-[#FFF5EA] border border-[#FF8A1F]/30 text-xs font-bold text-[#8C4B14] shadow-sm animate-in fade-in duration-150">
+            <div className="flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-[#FF8A1F] animate-pulse" />
+              <span>
+                Found <strong className="text-[#FF8A1F]">{professions.length}</strong> {professions.length === 1 ? 'profession' : 'professions'} matching &ldquo;{searchTerm}&rdquo;
+              </span>
+            </div>
+            <button
+              type="button"
+              onClick={onClearSearch}
+              className="text-[#FF8A1F] hover:text-[#C75A00] hover:underline ml-3 font-extrabold cursor-pointer"
+            >
+              Clear Search
+            </button>
+          </div>
+        )}
+
         {loading ? (
           <div className="flex flex-col items-center justify-center py-24 text-[#77716B]">
             <div className="w-10 h-10 rounded-full border-4 border-[#FF8A1F] border-t-transparent animate-spin mb-3" />
